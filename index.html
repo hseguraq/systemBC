@@ -51,30 +51,114 @@
 
     <script>
         // Municipios según estado seleccionado
-        const municipiosPorEstado = {
-            "Estado1": ["Municipio1-1", "Municipio1-2", "Municipio1-3"],
-            "Estado2": ["Municipio2-1", "Municipio2-2"],
-            "Estado3": ["Municipio3-1", "Municipio3-2", "Municipio3-3", "Municipio3-4"]
-        };
+const municipiosPorEstado = {
+    "Aguascalientes": ["Aguascalientes", "Asientos", "Calvillo"],
+    "Baja California": ["Tijuana", "Mexicali", "Ensenada"],
+    "Campeche": ["Campeche", "Ciudad del Carmen", "Champotón"],
+    "Chiapas": ["Tuxtla Gutiérrez", "San Cristóbal de las Casas", "Tapachula"],
+    "Chihuahua": ["Chihuahua", "Ciudad Juárez", "Delicias"],
+    "Ciudad de México": ["Álvaro Obregón", "Coyoacán", "Tlalpan"],
+    "Coahuila": ["Saltillo", "Torreón", "Monclova"],
+    "Durango": ["Durango", "Gómez Palacio", "Lerdo"],
+    "Guanajuato": ["León", "Irapuato", "Celaya"],
+    "Guerrero": ["Acapulco", "Chilpancingo", "Iguala"],
+    "Jalisco": ["Guadalajara", "Zapopan", "Puerto Vallarta"],
+    "Nuevo León": ["Monterrey", "San Pedro Garza García", "Guadalupe"],
+    "Puebla": ["Puebla", "Tehuacán", "San Andrés Cholula"],
+    "Querétaro": ["Querétaro", "San Juan del Río", "El Marqués"],
+    "Quintana Roo": ["Cancún", "Playa del Carmen", "Chetumal"],
+    "Veracruz": ["Veracruz", "Xalapa", "Coatzacoalcos"],
+    "Yucatán": ["Mérida", "Valladolid", "Tizimín"]
+};
 
-        // Datos de índice de riesgo por estado y municipio
-        const riesgoPorUbicacion = {
-            "Estado1": {
-                "Municipio1-1": [0.40, 0.45, 0.50, 0.55],
-                "Municipio1-2": [0.42, 0.48, 0.51, 0.56],
-                "Municipio1-3": [0.38, 0.44, 0.49, 0.54]
-            },
-            "Estado2": {
-                "Municipio2-1": [0.50, 0.55, 0.60, 0.65],
-                "Municipio2-2": [0.52, 0.57, 0.61, 0.66]
-            },
-            "Estado3": {
-                "Municipio3-1": [0.60, 0.62, 0.65, 0.70],
-                "Municipio3-2": [0.58, 0.60, 0.63, 0.68],
-                "Municipio3-3": [0.57, 0.59, 0.62, 0.67],
-                "Municipio3-4": [0.55, 0.57, 0.61, 0.66]
-            }
-        };
+// Datos de índice de riesgo por estado y municipio
+const riesgoPorUbicacion = {
+    "Aguascalientes": {
+        "Aguascalientes": [0.40, 0.45, 0.50, 0.55],
+        "Asientos": [0.30, 0.35, 0.40, 0.45],
+        "Calvillo": [0.42, 0.47, 0.52, 0.57]
+    },
+    "Baja California": {
+        "Tijuana": [0.60, 0.65, 0.70, 0.75],
+        "Mexicali": [0.55, 0.60, 0.65, 0.70],
+        "Ensenada": [0.50, 0.55, 0.60, 0.65]
+    },
+    "Campeche": {
+        "Campeche": [0.35, 0.40, 0.45, 0.50],
+        "Ciudad del Carmen": [0.32, 0.37, 0.42, 0.47],
+        "Champotón": [0.31, 0.36, 0.41, 0.46]
+    },
+    "Chiapas": {
+        "Tuxtla Gutiérrez": [0.45, 0.50, 0.55, 0.60],
+        "San Cristóbal de las Casas": [0.38, 0.43, 0.48, 0.53],
+        "Tapachula": [0.40, 0.45, 0.50, 0.55]
+    },
+    "Chihuahua": {
+        "Chihuahua": [0.50, 0.55, 0.60, 0.65],
+        "Ciudad Juárez": [0.48, 0.53, 0.58, 0.63],
+        "Delicias": [0.46, 0.51, 0.56, 0.61]
+    },
+    "Ciudad de México": {
+        "Álvaro Obregón": [0.70, 0.75, 0.80, 0.85],
+        "Coyoacán": [0.65, 0.70, 0.75, 0.80],
+        "Tlalpan": [0.60, 0.65, 0.70, 0.75]
+    },
+    "Coahuila": {
+        "Saltillo": [0.52, 0.57, 0.62, 0.67],
+        "Torreón": [0.55, 0.60, 0.65, 0.70],
+        "Monclova": [0.50, 0.55, 0.60, 0.65]
+    },
+    "Durango": {
+        "Durango": [0.45, 0.50, 0.55, 0.60],
+        "Gómez Palacio": [0.42, 0.47, 0.52, 0.57],
+        "Lerdo": [0.40, 0.45, 0.50, 0.55]
+    },
+    "Guanajuato": {
+        "León": [0.60, 0.65, 0.70, 0.75],
+        "Irapuato": [0.58, 0.63, 0.68, 0.73],
+        "Celaya": [0.55, 0.60, 0.65, 0.70]
+    },
+    "Guerrero": {
+        "Acapulco": [0.50, 0.55, 0.60, 0.65],
+        "Chilpancingo": [0.48, 0.53, 0.58, 0.63],
+        "Iguala": [0.45, 0.50, 0.55, 0.60]
+    },
+    "Jalisco": {
+        "Guadalajara": [0.65, 0.70, 0.75, 0.80],
+        "Zapopan": [0.60, 0.65, 0.70, 0.75],
+        "Puerto Vallarta": [0.55, 0.60, 0.65, 0.70]
+    },
+    "Nuevo León": {
+        "Monterrey": [0.70, 0.75, 0.80, 0.85],
+        "San Pedro Garza García": [0.68, 0.73, 0.78, 0.83],
+        "Guadalupe": [0.65, 0.70, 0.75, 0.80]
+    },
+    "Puebla": {
+        "Puebla": [0.50, 0.55, 0.60, 0.65],
+        "Tehuacán": [0.48, 0.53, 0.58, 0.63],
+        "San Andrés Cholula": [0.45, 0.50, 0.55, 0.60]
+    },
+    "Querétaro": {
+        "Querétaro": [0.55, 0.60, 0.65, 0.70],
+        "San Juan del Río": [0.52, 0.57, 0.62, 0.67],
+        "El Marqués": [0.50, 0.55, 0.60, 0.65]
+    },
+    "Quintana Roo": {
+        "Cancún": [0.60, 0.65, 0.70, 0.75],
+        "Playa del Carmen": [0.58, 0.63, 0.68, 0.73],
+        "Chetumal": [0.55, 0.60, 0.65, 0.70]
+    },
+    "Veracruz": {
+        "Veracruz": [0.45, 0.50, 0.55, 0.60],
+        "Xalapa": [0.48, 0.53, 0.58, 0.63],
+        "Coatzacoalcos": [0.50, 0.55, 0.60, 0.65]
+    },
+    "Yucatán": {
+        "Mérida": [0.50, 0.55, 0.60, 0.65],
+        "Valladolid": [0.48, 0.53, 0.58, 0.63],
+        "Tizimín": [0.45, 0.50, 0.55, 0.60]
+    }
+};
 
         // Función para cargar municipios cuando cambia el estado
         function cargarMunicipios() {
