@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico de Mamografía - Cáncer de Mama</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffe6f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+        }
+        h2, h3 {
+            color: #d63384;
+        }
+        input[type="file"] {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+        }
+        .success-message {
+            color: green;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        .diagnosis {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            background: #f8d7da;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .interpretation {
+            font-size: 16px;
+            color: #6c757d;
+            margin: 10px 0;
+            text-align: left;
+        }
+        .btn {
+            background-color: #d63384;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn:disabled {
+            background-color: #f7aacb;
+            cursor: not-allowed;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #555;
+        }
+        #imagePreview {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 10px;
+            display: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Carga tu Mamografía</h2>
+    <input type="file" id="mamografiaInput" accept="image/*">
+    <img id="imagePreview" alt="Vista previa de la imagen">
+    <div id="successMessage" class="success-message" style="display:none;">¡Mamografía cargada con éxito!</div>
+    <button id="diagnosticoBtn" class="btn" disabled>Enviar</button>
+    <div id="diagnosisResult" class="diagnosis"></div>
+    <div id="interpretationResult" class="interpretation"></div>
+    <div id="folio" class="footer"></div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('mamografiaInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const successMessage = document.getElementById('successMessage');
+    const diagnosticoBtn = document.getElementById('diagnosticoBtn');
+    const diagnosisResult = document.getElementById('diagnosisResult');
+    const interpretationResult = document.getElementById('interpretationResult');
+    const folio = document.getElementById('folio');
+
+    // Mensajes para cada categoría BI-RADS®
+    const biRadsCategories = [
+        { code: "BI-RADS 0", diagnosis: "Estudio incompleto, se requiere evaluación adicional.", interpretation: "Se recomienda que hables con tu médico para agendar una evaluación adicional, ya que el estudio actual no es concluyente." },
+        { code: "BI-RADS 1", diagnosis: "Negativo, no se observan anomalías.", interpretation: "No se han encontrado anomalías. Puedes estar tranquila, pero continúa con tus chequeos rutinarios." },
+        { code: "BI-RADS 2", diagnosis: "Hallazgos benignos.", interpretation: "El hallazgo no es canceroso y no representa un riesgo. No necesitas tratamiento, pero se sugiere seguimiento regular." },
+        { code: "BI-RADS 3", diagnosis: "Probablemente benigno, seguimiento a corto plazo.", interpretation: "Es probable que no sea maligno, pero se recomienda un seguimiento en un periodo corto para asegurarse." },
+        { code: "BI-RADS 4", diagnosis: "Anomalía sospechosa, considerar biopsia.", interpretation: "Es recomendable hacer una biopsia para determinar la naturaleza del hallazgo y descartar cualquier malignidad." },
+        { code: "BI-RADS 5", diagnosis: "Alta sospecha de malignidad, acción inmediata recomendada.", interpretation: "Existe alta sospecha de cáncer. Por favor, consulta inmediatamente a tu médico para una evaluación más detallada." },
+        { code: "BI-RADS 6", diagnosis: "Confirmado maligno, cáncer diagnosticado.", interpretation: "El cáncer ha sido diagnosticado. Por favor, habla con tu médico para conocer las opciones de tratamiento." }
+    ];
+
+    // Mostrar mensaje de éxito y vista previa de la imagen al cargar un archivo
+    fileInput.addEventListener('change', function() {
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+
+            successMessage.style.display = 'block';
+            diagnosticoBtn.disabled = false;
+        } else {
+            successMessage.style.display = 'none';
+            diagnosticoBtn.disabled = true;
+            imagePreview.style.display = 'none';
+        }
+    });
+
+    // Diagnóstico e interpretación basada en BI-RADS®
+    diagnosticoBtn.addEventListener('click', function() {
+        const randomIndex = Math.floor(Math.random() * biRadsCategories.length);
+        const selectedCategory = biRadsCategories[randomIndex];
+
+        diagnosisResult.textContent = `${selectedCategory.code}: ${selectedCategory.diagnosis}`;
+        interpretationResult.textContent = `Interpretación: ${selectedCategory.interpretation}`;
+
+        // Generar folio aleatorio para seguimiento
+        const folioNumber = 'F-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        folio.innerHTML = `<strong>Folio de diagnóstico:</strong> ${folioNumber}. Lleva este número al centro de salud donde se realizó la mamografía para más información.`;
+    });
+</script>
+
+</body>
+</html>
